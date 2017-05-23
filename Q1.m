@@ -35,17 +35,3 @@ cost=codingCost(mvf,[brow bcol]);
 %%
 M=size(cur);
 PSNR=10*log10((255^2*M(1)*M(2))./sum(sum((cur-motcomp).^2)));
-%%
-brow=4;
-bcol=4;
-search=8;
-distance=1;
-%%
-for i=4:16
-    brow=i;
-    bcol=i;
-    [time(i),cost(i),PSNR(i)]=compensation(3,brow,bcol,search,distance);
-end
-plot(time);
-
-
