@@ -1,4 +1,4 @@
-function [mvf MSE] = me(cur, ref, brow, bcol, search)
+function [mvf MSE] = meSAD(cur, ref, brow, bcol, search)
 %ME Motion estimation
 %    MVF = ME(cur, ref, brow, bcol, search);
 %    Computes a motion vector field between the current and reference
@@ -22,18 +22,18 @@ for r=1:brow:rows
         % Initializations
 
         dcolmin=0; drowmin=0;
-        SSDmin=brow*bcol*256*256;
+        SADmin=brow*bcol*256*256;
         % Motion Estimation
-        for dcol=-search:search,
-            for drow=-search:search,
+        for dcol=-search:search
+            for drow=-search:search
                 % Check: inside image
                 if ((r+drow>0)&&(r+drow+brow-1<=rows)&& ...
                         (c+dcol>0)&&(c+dcol+bcol-1<=cols))
                     % Macrobloc de reference
                     R=ref(r+drow:r+drow+brow-1, c+dcol:c+dcol+bcol-1);
-                    SSD=sum(sum((B-R).*(B-R)));
-                    if (SSD<SSDmin)
-                        SSDmin=SSD;
+                    SAD=sum(sum(abs(B-R)));
+                    if (SAD<SADmin)
+                        SADmin=SAD;
                         dcolmin=dcol;
                         drowmin=drow;
                     end;
@@ -43,7 +43,7 @@ for r=1:brow:rows
         % sauvegarde du MV
         mvf(r:r+brow-1,c:c+bcol-1,1)=drowmin;
         mvf(r:r+brow-1,c:c+bcol-1,2)=dcolmin;
-        total = total + SSDmin;
+        total = total + SADmin;
     end; % boucle sur c
 end; % boucle sur r
 MSE = total /rows /cols;

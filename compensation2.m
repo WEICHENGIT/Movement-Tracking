@@ -1,4 +1,4 @@
-function [time,cost,PSNR]=compensation(k,brow,bcol,search,distance)
+function [time,cost,PSNR]=compensation2(k,brow,bcol,search,distance)
 %%
 tic;
 filename='test_cif.y';
@@ -9,7 +9,7 @@ ref=getCifYframe(filename,k+distance);
 %axis image;
 %axis off;
 %%
-mvf=me(cur,ref,brow,bcol,search);
+mvf=meSAD(cur,ref,brow,bcol,search);
 %displayMVF(cur,mvf,8);
 %%
 motcomp=mc(ref,mvf);
